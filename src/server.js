@@ -8,6 +8,8 @@ const rateLimit = require('express-rate-limit');
 const { testConnection } = require('./config/supabase');
 const authRoutes = require('./routes/auth');
 const paymentRoutes = require('./routes/payment');
+const walletRoutes = require('./routes/wallet');
+const qrRoutes = require('./routes/qr');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -49,7 +51,9 @@ app.get('/health', (req, res) => {
 
 // API routes
 app.use('/api/v1/auth', authRoutes);
-app.use('/api/v1', paymentRoutes);
+app.use('/api/v1/qr', qrRoutes);
+app.use('/api/v1/payments', paymentRoutes);
+app.use('/api/v1/wallet', walletRoutes);
 
 // 404 handler
 app.use((req, res) => {
@@ -96,6 +100,7 @@ async function startServer() {
             console.log(`   POST   /api/v1/auth/logout`);
             console.log(`   POST   /api/v1/qr/scan`);
             console.log(`   POST   /api/v1/payments/process`);
+            console.log(`   GET    /api/v1/wallet/balance`);
             console.log('');
             console.log('📖 API Documentation: See emsec_api_documentation.docx');
             console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
